@@ -16,7 +16,7 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Get()
-  async getMany() {
+  async list() {
     const data = await this.taskService.getMany();
     return {
       message: 'Peticion Correcta',
@@ -25,7 +25,7 @@ export class TaskController {
   }
 
   @Post()
-  async crateOne(@Body() dto: CreateTaskDto) {
+  async create(@Body() dto: CreateTaskDto) {
     const data = await this.taskService.createOne(dto);
     return {
       message: 'Peticion Correcta',
@@ -34,17 +34,20 @@ export class TaskController {
   }
 
   @Get(':id')
-  getOne(@Param('id', ParseIntPipe) id: number) {
-    return this.taskService.getOne(id);
+  async show(@Param('id', ParseIntPipe) id: number) {
+    return await this.taskService.getOne(id);
   }
 
   @Put(':id')
-  updateOne(@Param('id', ParseIntPipe) id: number, @Body() dto: EditTaskDto) {
-    return this.taskService.updateOne(id, dto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: EditTaskDto,
+  ) {
+    return await this.taskService.updateOne(id, dto);
   }
 
   @Delete(':id')
-  deleteOne(@Param('id', ParseIntPipe) id: number) {
-    return this.taskService.deleteOne(id);
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    return await this.taskService.deleteOne(id);
   }
 }

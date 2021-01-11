@@ -12,29 +12,27 @@ export class TaskService {
     private readonly taskRepository: Repository<Task>,
   ) {}
 
-  async getMany(): Promise<Task[]> {
-    return await this.taskRepository.find();
-  }
-
-  async getOne(id: number) {
+  async finder(id: number) {
     const task = await this.taskRepository.findOne(id);
     if (!task) throw new NotFoundException('Task doent exists');
     return task;
   }
 
+  async getMany(): Promise<Task[]> {
+    return await this.taskRepository.find();
+  }
+
+  async getOne(id: number) {
+    return await this.finder(id);
+  }
+
   async createOne(dto: CreateTaskDto) {
     const task = this.taskRepository.create(dto);
-
-    console.log(await this.taskRepository.save(task));
-
     return await this.taskRepository.save(task);
   }
 
   async updateOne(id: number, dto: EditTaskDto) {
-    const task = await this.taskRepository.findOne(id);
-
-    if (!task) throw new NotFoundException('Task doent exists');
-
+    const task = await this.finder(id);
     const editedTask = Object.assign(task, dto);
 
     return await this.taskRepository.save(editedTask);
