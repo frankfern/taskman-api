@@ -1,7 +1,11 @@
+import { hash } from 'bcryptjs';
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -25,9 +29,22 @@ export class User {
 
   @Column({ type: 'varchar', default: true })
   status: boolean;
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'update_at', type: 'timestamp' })
   modifiedAt: Date;
+
+  @OneToMany()
+  tasks: 
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    if (!this.password) {
+      return;
+    }
+    this.password = await hash(this.password, 10);
+  }
 }

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -12,25 +16,26 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  private async finder(id: number) {
-    const user = await this.userRepository.findOne(id);
-    if (!user) throw new NotFoundException('user doent exists');
-    return user;
-  }
-
   async getMany(): Promise<User[]> {
     return await this.userRepository.find();
   }
 
   async getOne(id: number) {
     const user = await this.userRepository.findOne(id);
-    if (!user) throw new NotFoundException('user doent exists');
+    if (!user) throw new NotFoundException('User doent exists');
     return user;
   }
 
   async createOne(dto: CreateUserDto) {
-    const user = await this.userRepository.create(dto);
-    return await this.userRepository.save(user);
+    const userExist = await this.userRepository.findOne({ email: dto.email });
+    if (userExist)
+      throw new BadRequestException('User already registered with this email');
+
+    const newUser = await this.userRepository.create(dto);
+    const user = await this.userRepository.save(newUser);
+    delete user.password;
+
+    return user;
   }
 
   async updateOne(id: number, dto: EditUserDto) {
