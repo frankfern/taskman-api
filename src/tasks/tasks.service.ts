@@ -12,7 +12,7 @@ export class TaskService {
     private readonly taskRepository: Repository<Task>,
   ) {}
 
-  async finder(id: number) {
+  private async finder(id: number) {
     const task = await this.taskRepository.findOne(id);
     if (!task) throw new NotFoundException('Task doent exists');
     return task;
@@ -23,17 +23,19 @@ export class TaskService {
   }
 
   async getOne(id: number) {
-    return await this.finder(id);
+    const task = await this.taskRepository.findOne(id);
+    if (!task) throw new NotFoundException('Task doent exists');
+    return task;
   }
 
   async createOne(dto: CreateTaskDto) {
-    const task = this.taskRepository.create(dto);
+    const task = await this.taskRepository.create(dto);
     return await this.taskRepository.save(task);
   }
 
   async updateOne(id: number, dto: EditTaskDto) {
-    const task = await this.finder(id);
-    const editedTask = Object.assign(task, dto);
+    const task = await this.getOne(id);
+    const editedTask = await Object.assign(task, dto);
 
     return await this.taskRepository.save(editedTask);
   }

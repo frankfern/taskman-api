@@ -25,6 +25,6 @@ export class Task {
   @Column({ type: 'boolean', default: true })
   status!: boolean;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
 }
