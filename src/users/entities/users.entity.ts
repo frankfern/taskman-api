@@ -36,9 +36,6 @@ export class User {
   @UpdateDateColumn({ name: 'update_at', type: 'timestamp' })
   modifiedAt: Date;
 
-  @OneToMany()
-  tasks: 
-
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {

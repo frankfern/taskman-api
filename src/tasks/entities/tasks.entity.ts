@@ -17,13 +17,13 @@ export class Task {
   title!: string;
 
   @Column({ type: 'varchar' })
-  content!: string;
+  description!: string;
 
   @Column({ type: 'simple-array' })
   tags?: string[];
 
-  @Column({ type: 'boolean', default: true })
-  status!: boolean;
+  @Column({ type: 'boolean', default: false })
+  completed!: boolean;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;

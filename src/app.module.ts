@@ -11,6 +11,7 @@ import {
   DATABASE_PORT,
   DATABASE_USERNAME,
 } from './config/constans';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,8 +25,9 @@ import {
         password: config.get<string>(DATABASE_PASSWORD),
         database: config.get<string>(DATABASE_NAME),
         entities: ['dist/**/**/*entity{.ts,.js}'],
+        migrations: ['dist/api/migrations/*.js'],
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
         logging: true,
         logger: 'file',
       }),
@@ -36,6 +38,7 @@ import {
     }),
     TaskModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
