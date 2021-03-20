@@ -1,7 +1,5 @@
 # Taskman Api
 
-## Description
-
 A simple to-do app made in Nestjs.
 
 ## Installation
