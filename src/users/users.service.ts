@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 
 import { CreateUserDto, EditUserDto } from './dtos';
 import { User } from './entities/users.entity';
+import { UserFindOne } from './interfaces/userFindOne.interface';
 
 @Injectable()
 export class UserService {
@@ -48,10 +49,10 @@ export class UserService {
   async deleteOne(id: number) {
     return await this.userRepository.delete(id);
   }
-  async findByEmail(email: string) {
+  async findOne(data: UserFindOne) {
     return await this.userRepository
       .createQueryBuilder('user')
-      .where({ email })
+      .where(data)
       .addSelect('user.password')
       .getOne();
   }
