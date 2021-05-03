@@ -48,4 +48,11 @@ export class UserService {
   async deleteOne(id: number) {
     return await this.userRepository.delete(id);
   }
+  async findByEmail(email: string) {
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .where({ email })
+      .addSelect('user.password')
+      .getOne();
+  }
 }
